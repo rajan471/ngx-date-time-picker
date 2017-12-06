@@ -62,8 +62,16 @@ export class DatePickerComponent implements OnInit {
     this.showCalendar = false;
   }
   processInput() {
-    let defaultdate = this.options.timePicker ? moment(this.selectedDate, 'DD/MM/YYYY hh:mmA') : moment(this.selectedDate, 'DD/MM/YYYY');
-
+    let defaultdate = null;
+    if(this.options.timepicker && this.options.datePicker){
+      defaultdate = moment(this.selectedDate, 'DD/MM/YYYY hh:mmA')
+    }
+    else if(this.options.timePicker){
+      defaultdate = moment(this.selectedDate, 'hh:mmA')
+    }
+    else{
+      defaultdate =  moment(this.selectedDate, 'DD/MM/YYYY');
+    }
     // timepicker
     if (this.options.timePicker) {
       this.selectedHour = defaultdate.format('hh');
@@ -76,19 +84,19 @@ export class DatePickerComponent implements OnInit {
     if (this.options.datePicker) {
       this.calendarMY = this.calendarMY != null ? this.calendarMY : defaultdate;
     } else {
-      this.calendarMY = '';
+      this.calendarMY = moment();
     }
-
-
     if (this.options.timePicker) {
-      this.selectedTime = moment(this.selectedDate, 'DD/MM/YYYY hh:mmA').format('hh:mmA');
+      this.selectedTime = moment(this.selectedDate, 'hh:mmA').format('hh:mmA');
     } else {
       this.selectedTime = '';
     }
-    if (this.options.datePicker) { this.selectedDate = this.calendarMY.format('DD/MM/YYYY') } else {
+    if (this.options.datePicker) { 
+      this.selectedDate = this.calendarMY.format('DD/MM/YYYY') 
+    }
+    else {
       this.selectedDate = ''
     }
-
     this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
   }
   loadCalendar(momentMonth) {
@@ -169,7 +177,6 @@ export class DatePickerComponent implements OnInit {
     this.loadCalendar(this.calendarMY);
   }
   chooseDate(dateData) {
-    console.log(dateData)
     if (this.options.timePicker) this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
     this.selectedDate = moment({ y: dateData.year, M: dateData.month, d: dateData.date }).format('DD/MM/YYYY');
     this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();

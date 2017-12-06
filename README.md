@@ -27,7 +27,8 @@ Then in component file use the date-time-picker as follows:
 date: string;
 
 constructor(){
-    this.date = moment().format('DD/MM/YYYY hh:mmA');
+    this.date = moment().format('DD/MM/YYYY'); //for date-picker
+    // this.date = moment().format('hh:mmA');  //for time-picker
 }
 ```
 ```(getData)``` will provide the formatted date as ```$event```.
