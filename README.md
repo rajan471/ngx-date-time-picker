@@ -10,6 +10,12 @@ Angular 5 Date-time picker
 
 You can use this in the following manner. 
 
+1. Import the package Module as
+```ts
+import { NgxDateTimePickerModule } from  'ngx-date-time-picker';
+```
+
+Then in component file use the date-time-picker as follows:
 ```ts
 <app-date-picker [selectedDate]="date" (getData)="getStartDateTime($event)" [options]="{timePicker: false}"></app-date-picker>
 
