@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, Output, OnInit, HostListener, EventEmitte
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-date-picker',
+  selector: 'ngx-date-time-picker',
   templateUrl: './date-picker.component.html',
   styleUrls: ['./date-picker.component.css']
 })
