@@ -1,0 +1,83 @@
+.date-time-picker {
+    position: relative;
+}
+.calendar{
+    display: inline-block;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #222;
+    border-radius: 4px;
+    padding: 3px;
+    font-size: 12px;
+    box-shadow: 1px 1px 1px #eee;
+}
+.date-picker {
+    display: inline-block;
+    position: relative;
+}
+.time-picker {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    margin-top: 50px;
+}
+.calendar {
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+    left: 0;
+}
+.date-picker  table caption span.prev {
+    left: 7px;
+}
+.date-picker  table caption span.next {
+    right: 7px;
+}
+.date-picker  table caption span.prev,
+.date-picker  table caption span.next {
+    position: absolute;
+    top: 4px;
+    z-index: 1;
+    cursor: pointer;
+    display: block;
+    width: 12px;
+    height: 12px;
+    text-align: center;
+}
+.date-picker  table caption span.center {
+    font-size: 14px;
+    display: block;
+}
+.date-picker  table span.date{
+    cursor: pointer;
+    display: block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+}
+.date-picker  table span.date.today{
+    border: 1px solid #222;
+}
+.date-picker  table span.date:hover{
+    background: #ddd;
+}
+.date-picker  table span.date.prev,
+.date-picker  table span.date.next {
+    color: #b9b6b6;
+}
+.date-picker table th {
+    height: 20px;
+    text-align: center;
+}
+.selector {
+    display: inline-block;
+}
+.selector span.title{
+    display: block;
+    font-size: 13px;
+}
+.options {
+    padding: 5px;
+    text-align: center;
+}

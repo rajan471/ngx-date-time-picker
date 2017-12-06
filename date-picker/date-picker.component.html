@@ -1,0 +1,52 @@
+<div class="date-time-picker">
+  <input type="text" [(ngModel)]="selectedDateTime" (click)="openCalendar()" />
+  <div class="calendar" *ngIf="showCalendar && selectedDateTime!=''">
+    <div class="date-picker" *ngIf="options.datePicker">
+      <table>
+        <caption>
+          <span class="prev" (click)="loadPrev()">&lt;</span>
+          <span class="center">{{month}} {{year}}</span>
+          <span class="next" (click)="loadNext()">&gt;</span>
+        </caption>
+        <tr>
+          <th>Mon</th>
+          <th>Tue</th>
+          <th>Wed</th>
+          <th>Thr</th>
+          <th>Fri</th>
+          <th>Sat</th>
+          <th>Sun</th>
+        </tr>
+        <tr *ngFor="let row of calendar; let i = index; ">
+          <td *ngFor="let dateData of calendar[i]">
+            <span class="date" [ngClass]="dateData.class" (click)="chooseDate(dateData)">{{dateData.date}}</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="time-picker" *ngIf="options.timePicker">
+      <div class="selector">
+        <span class="title">Hour</span>
+        <select name="selectedHour" [(ngModel)]="selectedHour" (change)="changeTime()">
+          <option *ngFor="let hour of hours" [ngValue]="hour">{{hour}}</option>
+        </select>
+      </div>
+      <div class="selector">
+        <span class="title">Minute</span>
+        <select name="selectedMinutes" [(ngModel)]="selectedMinutes" (change)="changeTime()">
+          <option *ngFor="let minute of minutes" [ngValue]="minute">{{minute}}</option>
+        </select>
+      </div>
+      <div class="selector">
+        <select name="selectedAmPm" [(ngModel)]="selectedAmPm" (change)="changeTime()">
+          <option [ngValue]="'AM'">AM</option>
+          <option [ngValue]="'PM'">PM</option>
+        </select>
+      </div>
+    </div>
+    <div class="options">
+      <button class="apply" (click)="apply()">Apply</button>
+      <button class="now" (click)="defaultToCurrentDate()">Now</button>
+    </div>
+  </div>
+</div>
