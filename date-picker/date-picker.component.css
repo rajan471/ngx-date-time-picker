@@ -81,3 +81,35 @@
     padding: 5px;
     text-align: center;
 }
+
+.date-time-picker .calendar span.close::after {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+}
+
+.date-time-picker .calendar span.close::before {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+}
+.date-time-picker .calendar span.close::before, .date-time-picker .calendar span.close::after {
+    content: "";
+    width: 100%;
+    background: #000;
+    height: 2px;
+    position: absolute;
+    display: block;
+    top: 50%;
+    margin-top: -1px;
+}
+.date-time-picker .calendar span.close {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: 0;
+    top: 0;
+    opacity: 1;
+}

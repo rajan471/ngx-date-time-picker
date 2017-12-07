@@ -84,7 +84,7 @@ export class DatePickerComponent implements OnInit {
     if (this.options.datePicker) {
       this.calendarMY = this.calendarMY != null ? this.calendarMY : defaultdate;
     } else {
-      this.calendarMY = moment();
+      this.calendarMY = '';
     }
     if (this.options.timePicker) {
       this.selectedTime = moment(this.selectedDate, 'hh:mmA').format('hh:mmA');
@@ -92,7 +92,7 @@ export class DatePickerComponent implements OnInit {
       this.selectedTime = '';
     }
     if (this.options.datePicker) { 
-      this.selectedDate = this.calendarMY.format('DD/MM/YYYY') 
+      this.selectedDate = this.calendarMY.format('DD/MM/YYYY');
     }
     else {
       this.selectedDate = ''
@@ -179,10 +179,12 @@ export class DatePickerComponent implements OnInit {
   chooseDate(dateData) {
     if (this.options.timePicker) this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
     this.selectedDate = moment({ y: dateData.year, M: dateData.month, d: dateData.date }).format('DD/MM/YYYY');
+    if(this.options.datePicker) this.selectedTime = '';
     this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
   }
   changeTime() {
     this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
+    if(this.options.timePicker) this.selectedDate = '';
     this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
   }
 
@@ -194,6 +196,9 @@ export class DatePickerComponent implements OnInit {
       this.getData.emit(this.selectedDateTime);
       this.showCalendar = false;
     }
+  }
+  closeCalendar(){
+    this.showCalendar = false;
   }
 }
 

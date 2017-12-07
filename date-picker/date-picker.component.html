@@ -1,6 +1,7 @@
 <div class="date-time-picker">
   <input type="text" [(ngModel)]="selectedDateTime" (click)="openCalendar()" />
   <div class="calendar" *ngIf="showCalendar && selectedDateTime!=''">
+      <span class="close" (click)="closeCalendar()"></span>
     <div class="date-picker" *ngIf="options.datePicker">
       <table>
         <caption>

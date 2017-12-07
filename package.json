@@ -1,6 +1,6 @@
 {
   "name": "ngx-date-time-picker",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Angular 5 lightweight date/time/date-time picker",
   "keywords": [
     "date",
