@@ -19,8 +19,8 @@
           <th>Sun</th>
         </tr>
         <tr *ngFor="let row of calendar; let i = index; ">
-          <td *ngFor="let dateData of calendar[i]">
-            <span class="date" [ngClass]="dateData.class" (click)="chooseDate(dateData)">{{dateData.date}}</span>
+          <td *ngFor="let dateData of calendar[i]; let j = index">
+            <span class="date" class="{{dateData.class}}" [ngClass]="{selected: choosen==dateData}" (click)="chooseDate(dateData)">{{dateData.date}}</span>
           </td>
         </tr>
       </table>

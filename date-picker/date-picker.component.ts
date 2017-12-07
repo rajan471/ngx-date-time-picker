@@ -27,7 +27,7 @@ export class DatePickerComponent implements OnInit {
   selectedHour = null;
   selectedMinutes = null;
   selectedAmPm = null;
-
+  choosen = null;
   defaultOptions = {
     datePicker: true,
     timePicker: true
@@ -176,11 +176,13 @@ export class DatePickerComponent implements OnInit {
     this.calendarMY = this.calendarMY.add(1, 'months');
     this.loadCalendar(this.calendarMY);
   }
-  chooseDate(dateData) {
+  chooseDate(dateData=null) {
+    this.choosen = dateData;
     if (this.options.timePicker) this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
     this.selectedDate = moment({ y: dateData.year, M: dateData.month, d: dateData.date }).format('DD/MM/YYYY');
     if(this.options.datePicker) this.selectedTime = '';
     this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
+    this.getData.emit(this.selectedDateTime);
   }
   changeTime() {
     this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;

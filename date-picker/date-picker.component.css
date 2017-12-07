@@ -62,6 +62,10 @@
 .date-picker  table span.date:hover{
     background: #ddd;
 }
+.date-picker table span.date.selected {
+    background: #222;
+    color: #fff;
+}
 .date-picker  table span.date.prev,
 .date-picker  table span.date.next {
     color: #b9b6b6;
