@@ -186,6 +186,7 @@ export class DatePickerComponent implements OnInit {
     this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
     if(this.options.timePicker) this.selectedDate = '';
     this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
+    this.getData.emit(this.selectedDateTime);
   }
 
   apply() {
