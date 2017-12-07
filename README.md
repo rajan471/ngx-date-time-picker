@@ -2,6 +2,12 @@
 
 Angular 5 Date-time picker
 
+### Installation
+
+```node
+npm install ngx-date-time-picker --save
+```
+
 ### Dependencies
 - Moment.js
 - FormsModule
