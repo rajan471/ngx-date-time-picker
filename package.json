@@ -7,6 +7,15 @@
     "time",
     "picker"
   ],
+  "repository" :
+  { 
+    "type" : "git",
+    "url" : "https://github.com/rajan471/ngx-date-time-picker.git"
+  },
+  "bugs":{
+    "url": "https://github.com/rajan471/ngx-date-time-picker/issues",
+    "email": "rajankumar471@gmail.com"
+  },
   "author": "Rajan Kumar",
   "license": "MIT",
   "dependencies": {
