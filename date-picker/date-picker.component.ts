@@ -7,11 +7,13 @@ import * as moment from 'moment';
   styleUrls: ['./date-picker.component.css']
 })
 export class DatePickerComponent implements OnInit {
-  @Input() selectedDate;
+  @Input() selectedDateTime;
   @Input() options;
+  @Input() dateTimeFormat;
+
   @Output() getData = new EventEmitter;
-  selectedDateTime: string = '';
   calendarMY: any = null;
+  selectedDate = '';
   startDayNumber: number;
   daysInCurrentMonth: number;
   daysInPrevMonth: number;
@@ -41,73 +43,55 @@ export class DatePickerComponent implements OnInit {
     this.showCalendar = true;
     this.loadCalendar(this.calendarMY);
   }
-  ngOnInit() {
-    if (!!this.options) {
-      this.options = Object.assign({}, this.defaultOptions, this.options);
-    } else {
-      this.options = this.defaultOptions;
-    }
+  ngOnInit(){
     this.processInput();
   }
   defaultToCurrentDate() {
-    if (this.options.timePicker) {
-      this.selectedTime = moment().format('hh:mmA');
+    this.selectedDateTime = moment().format(this.dateTimeFormat);
+    
+    if (this.options.timePicker && !this.options.datePicker) {
+      this.selectedHour = moment().format('hh');
+      this.selectedMinutes = moment().format('mm');
+      this.selectedAmPm = moment().format('A');
+      this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
     }
-    if (this.options.datePicker) {
-      this.selectedDate = moment().format('DD/MM/YYYY');
+    else if (this.options.datePicker && !this.options.timePicker){
+      this.selectedDateTime = moment().format(this.dateTimeFormat);
       this.calendarMY = moment();
+      this.selectedTime = '';
     }
-    this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
     this.loadCalendar(this.calendarMY);
     this.showCalendar = false;
   }
   processInput() {
+    this.options = Object.assign({}, this.defaultOptions, this.options)
     let defaultdate = null;
-    if(this.options.timepicker && this.options.datePicker){
-      defaultdate = moment(this.selectedDate, 'DD/MM/YYYY hh:mmA')
-    }
-    else if(this.options.timePicker){
-      defaultdate = moment(this.selectedDate, 'hh:mmA')
-    }
-    else{
-      defaultdate =  moment(this.selectedDate, 'DD/MM/YYYY');
-    }
+    defaultdate =  moment(this.selectedDateTime, this.dateTimeFormat);
     // timepicker
-    if (this.options.timePicker) {
+    if (!!this.options.timePicker) {
       this.selectedHour = defaultdate.format('hh');
       this.selectedMinutes = defaultdate.format('mm');
       this.selectedAmPm = defaultdate.format('A');
-      this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
-    }
-
-    //Datepicker 
-    if (this.options.datePicker) {
-      this.calendarMY = this.calendarMY != null ? this.calendarMY : defaultdate;
-    } else {
+      this.selectedDateTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
       this.calendarMY = '';
+      this.selectedTime = this.selectedDateTime;
     }
-    if (this.options.timePicker) {
-      this.selectedTime = moment(this.selectedDate, 'hh:mmA').format('hh:mmA');
-    } else {
+    //Datepicker 
+    else if (!!this.options.datePicker) {
+      this.calendarMY = this.calendarMY != null ? this.calendarMY : defaultdate;
       this.selectedTime = '';
-    }
-    if (this.options.datePicker) { 
-      this.selectedDate = this.calendarMY.format('DD/MM/YYYY');
-    }
-    else {
-      this.selectedDate = ''
-    }
-    this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
+      this.selectedDateTime = this.calendarMY.format(this.dateTimeFormat);
+      this.selectedDate  = this.selectedDateTime;
+    }  
+    
   }
   loadCalendar(momentMonth) {
     if (this.options.datePicker) {
-
       momentMonth = momentMonth.startOf('month');
       this.month = momentMonth.format('MMM');
       let activeMonth = parseInt(momentMonth.month());
       this.year = parseInt(momentMonth.year());
       
-      // let prevMonth = momentMonth.add(-1, 'months');
       let prevMonth = moment().month(activeMonth).year(this.year).add(-1, 'months');
       let nextMonth = moment().month(activeMonth).year(this.year).add(1, 'months');
       
@@ -130,7 +114,7 @@ export class DatePickerComponent implements OnInit {
           y: this.calendarDates[index].year,
           M: this.calendarDates[index].month,
           d: this.calendarDates[index].date
-        }).format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
+        }).format(this.dateTimeFormat) == moment().format(this.dateTimeFormat)) {
           this.calendarDates[index].class = "today"
         }
         index++;
@@ -142,7 +126,7 @@ export class DatePickerComponent implements OnInit {
           y: this.calendarDates[index].year,
           M: this.calendarDates[index].month,
           d: this.calendarDates[index].date
-        }).format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
+        }).format(this.dateTimeFormat) == moment().format(this.dateTimeFormat)) {
           this.calendarDates[index].class = "today"
         }
         index++;
@@ -155,7 +139,7 @@ export class DatePickerComponent implements OnInit {
           y: this.calendarDates[index].year,
           M: this.calendarDates[index].month,
           d: this.calendarDates[index].date
-        }).format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
+        }).format(this.dateTimeFormat) == moment().format(this.dateTimeFormat)) {
           this.calendarDates[index].class = "today"
         }
         index++;
@@ -178,27 +162,22 @@ export class DatePickerComponent implements OnInit {
   }
   chooseDate(dateData=null) {
     this.choosen = dateData;
-    if (this.options.timePicker) this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
-    this.selectedDate = moment({ y: dateData.year, M: dateData.month, d: dateData.date }).format('DD/MM/YYYY');
-    if(this.options.datePicker) this.selectedTime = '';
-    this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
-    this.getData.emit(this.selectedDateTime);
+    if(!!dateData){
+      this.selectedDate = moment({ y: dateData.year, M: dateData.month, d: dateData.date }).format(this.dateTimeFormat);
+      this.selectedDateTime = this.selectedDate;
+      this.showCalendar = false;
+      this.getData.emit(this.selectedDateTime);
+    }
   }
   changeTime() {
     this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
-    if(this.options.timePicker) this.selectedDate = '';
-    this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
+    this.selectedDateTime = this.selectedTime;
     this.getData.emit(this.selectedDateTime);
   }
 
   apply() {
-    if (this.options.timePicker) this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
-    if (this.selectedDate != null && this.selectedTime != null) {
-      if (!this.options.datePicker) this.selectedDate = '';
-      this.selectedDateTime = (this.selectedDate + ' ' + this.selectedTime).trim();
-      this.getData.emit(this.selectedDateTime);
-      this.showCalendar = false;
-    }
+    this.getData.emit(this.selectedDateTime);
+    this.showCalendar = false;
   }
   closeCalendar(){
     this.showCalendar = false;

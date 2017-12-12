@@ -23,11 +23,13 @@ import { NgxDateTimePickerModule } from  'ngx-date-time-picker';
 
 Then in component file use the date-time-picker as follows:
 ```ts
-<ngx-date-time-picker [selectedDate]="date" (getData)="getStartDateTime($event)" [options]="{timePicker: false}"></ngx-date-time-picker>
+<ngx-date-time-picker [selectedDateTime]="date" (getData)="getStartDate($event)" [options]="{timePicker: false}" [dateTimeFormat]="'MM/DD/YYYY'"></ngx-date-time-picker>
 
 ```
 
-[SelectedDate] takes input ```date``` defined in the component.ts file as:
+- You can now define ```dateTimeFormat```
+
+```[selectedDateTime]``` takes input ```date``` defined in the component.ts file as:
 
 ```ts
 date: string;
