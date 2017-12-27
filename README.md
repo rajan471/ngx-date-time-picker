@@ -2,6 +2,9 @@
 
 Angular 5 Date-time picker
 
+#### New 
+*bug fixes
+
 ### Installation
 
 ```node

@@ -43,19 +43,19 @@ export class DatePickerComponent implements OnInit {
     this.showCalendar = true;
     this.loadCalendar(this.calendarMY);
   }
-  ngOnInit(){
+  ngOnInit() {
     this.processInput();
   }
   defaultToCurrentDate() {
     this.selectedDateTime = moment().format(this.dateTimeFormat);
-    
+
     if (this.options.timePicker && !this.options.datePicker) {
       this.selectedHour = moment().format('hh');
       this.selectedMinutes = moment().format('mm');
       this.selectedAmPm = moment().format('A');
       this.selectedTime = this.selectedHour + ':' + this.selectedMinutes + this.selectedAmPm;
     }
-    else if (this.options.datePicker && !this.options.timePicker){
+    else if (this.options.datePicker && !this.options.timePicker) {
       this.selectedDateTime = moment().format(this.dateTimeFormat);
       this.calendarMY = moment();
       this.selectedTime = '';
@@ -66,7 +66,12 @@ export class DatePickerComponent implements OnInit {
   processInput() {
     this.options = Object.assign({}, this.defaultOptions, this.options)
     let defaultdate = null;
-    defaultdate =  moment(this.selectedDateTime, this.dateTimeFormat);
+    if (!!this.selectedDateTime) {
+      defaultdate = moment(this.selectedDateTime, this.dateTimeFormat);
+    }
+    else {
+      defaultdate = moment();
+    }
     // timepicker
     if (!!this.options.timePicker) {
       this.selectedHour = defaultdate.format('hh');
@@ -81,9 +86,9 @@ export class DatePickerComponent implements OnInit {
       this.calendarMY = this.calendarMY != null ? this.calendarMY : defaultdate;
       this.selectedTime = '';
       this.selectedDateTime = this.calendarMY.format(this.dateTimeFormat);
-      this.selectedDate  = this.selectedDateTime;
-    }  
-    
+      this.selectedDate = this.selectedDateTime;
+    }
+
   }
   loadCalendar(momentMonth) {
     if (this.options.datePicker) {
@@ -91,10 +96,10 @@ export class DatePickerComponent implements OnInit {
       this.month = momentMonth.format('MMM');
       let activeMonth = parseInt(momentMonth.month());
       this.year = parseInt(momentMonth.year());
-      
+
       let prevMonth = moment().month(activeMonth).year(this.year).add(-1, 'months');
       let nextMonth = moment().month(activeMonth).year(this.year).add(1, 'months');
-      
+
       this.startDayNumber = momentMonth.day() - 1;
 
       this.daysInCurrentMonth = momentMonth.daysInMonth();
@@ -109,38 +114,60 @@ export class DatePickerComponent implements OnInit {
       let index = 0
       for (let i = prevDatesStarts; i <= prevDatesEnds; i++) {
         this.calendarDates[index] = { date: i, class: 'prev', month: prevMonth.month(), year: prevMonth.year() };
-        
-        if (moment({
-          y: this.calendarDates[index].year,
-          M: this.calendarDates[index].month,
-          d: this.calendarDates[index].date
-        }).format(this.dateTimeFormat) == moment().format(this.dateTimeFormat)) {
-          this.calendarDates[index].class = "today"
-        }
-        index++;
-      }
-      for (let i = 1; i <= this.daysInCurrentMonth; i++) {
-        this.calendarDates[index] = { date: i, class: 'active', month: momentMonth.month(), year: momentMonth.year() };     
 
         if (moment({
           y: this.calendarDates[index].year,
           M: this.calendarDates[index].month,
           d: this.calendarDates[index].date
         }).format(this.dateTimeFormat) == moment().format(this.dateTimeFormat)) {
-          this.calendarDates[index].class = "today"
+          this.calendarDates[index].class = "today";
         }
+        if (moment({
+          y: this.calendarDates[index].year,
+          M: this.calendarDates[index].month,
+          d: this.calendarDates[index].date
+        }).diff(moment(this.selectedDateTime, this.dateTimeFormat)) == 0) {
+          this.calendarDates[index].class = this.calendarDates[index].class + " pre-selected";
+        }
+        index++;
+      }
+      for (let i = 1; i <= this.daysInCurrentMonth; i++) {
+        this.calendarDates[index] = { date: i, class: 'active', month: momentMonth.month(), year: momentMonth.year() };
+
+        if (moment({
+          y: this.calendarDates[index].year,
+          M: this.calendarDates[index].month,
+          d: this.calendarDates[index].date
+        }).format(this.dateTimeFormat) == moment().format(this.dateTimeFormat)) {
+          this.calendarDates[index].class = "today";
+        }
+        if (moment({
+          y: this.calendarDates[index].year,
+          M: this.calendarDates[index].month,
+          d: this.calendarDates[index].date
+        }).diff(moment(this.selectedDateTime, this.dateTimeFormat)) == 0) {
+          this.calendarDates[index].class = this.calendarDates[index].class + " pre-selected";
+        }
+
         index++;
       }
 
       for (let i = 1; i <= 42 - (this.startDayNumber + this.daysInCurrentMonth); i++) {
         this.calendarDates[index] = { date: i, class: 'next', month: nextMonth.month(), year: nextMonth.year() };
-        
+
         if (moment({
           y: this.calendarDates[index].year,
           M: this.calendarDates[index].month,
           d: this.calendarDates[index].date
         }).format(this.dateTimeFormat) == moment().format(this.dateTimeFormat)) {
-          this.calendarDates[index].class = "today"
+          this.calendarDates[index].class = "today";
+        }
+        if (moment({
+          y: this.calendarDates[index].year,
+          M: this.calendarDates[index].month,
+          d: this.calendarDates[index].date
+        }).diff(moment(this.selectedDateTime, this.dateTimeFormat)) == 0) {
+          this.calendarDates[index].class = this.calendarDates[index].class + " pre-selected";
         }
         index++;
       }
@@ -160,9 +187,9 @@ export class DatePickerComponent implements OnInit {
     this.calendarMY = this.calendarMY.add(1, 'months');
     this.loadCalendar(this.calendarMY);
   }
-  chooseDate(dateData=null) {
+  chooseDate(dateData = null) {
     this.choosen = dateData;
-    if(!!dateData){
+    if (!!dateData) {
       this.selectedDate = moment({ y: dateData.year, M: dateData.month, d: dateData.date }).format(this.dateTimeFormat);
       this.selectedDateTime = this.selectedDate;
       this.showCalendar = false;
@@ -179,7 +206,7 @@ export class DatePickerComponent implements OnInit {
     this.getData.emit(this.selectedDateTime);
     this.showCalendar = false;
   }
-  closeCalendar(){
+  closeCalendar() {
     this.showCalendar = false;
   }
 }
