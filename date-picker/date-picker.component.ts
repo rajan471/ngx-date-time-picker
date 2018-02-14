@@ -67,7 +67,11 @@ export class DatePickerComponent implements OnInit {
     this.options = Object.assign({}, this.defaultOptions, this.options)
     let defaultdate = null;
     if (!!this.selectedDateTime) {
-      defaultdate = moment(this.selectedDateTime, this.dateTimeFormat);
+      if (moment(this.selectedDateTime,this.dateTimeFormat).format(this.dateTimeFormat) === 'Invalid date') {
+        defaultdate = moment(this.selectedDateTime);
+      }else{
+        defaultdate = moment(this.selectedDateTime, this.dateTimeFormat);
+      }
     }
     else {
       defaultdate = moment();
@@ -210,4 +214,3 @@ export class DatePickerComponent implements OnInit {
     this.showCalendar = false;
   }
 }
-
